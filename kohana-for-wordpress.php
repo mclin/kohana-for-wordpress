@@ -246,7 +246,7 @@ function kohana_request_filter($request)
 	//error_log( "Found the post/page id of $requested_post_id" );
 	
 	// If request is not for a valid word press page. Look for valid kohana request
-	if( ! $requested_post_id && get_option('kohana_process_all_uri') ){
+	if( ! $requested_post_id && !$request['feed'] && get_option('kohana_process_all_uri') ){
 		//error_log( "No page found and process all uri is enabled. Examining uri for Kohana controller request" );
 		// Parse query string and look for kohana type requests
 		$kohana_request = kohana_parse_request();	
