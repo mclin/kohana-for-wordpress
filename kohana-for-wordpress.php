@@ -19,12 +19,13 @@ add_action('admin_menu', 'kohana_register_admin_menu');
 add_action('widgets_init', create_function('', 'return register_widget("KohanaWidget");'));
 add_action('wp_head', 'kohana_wp_head');
 
+
 /**
  * Register Filters
  */
 add_filter('request','kohana_request_filter');
 add_filter('wp','kohana_wp_filter');
-add_filter('the_content', 'kohana_the_content_filter');
+add_filter('kohana_content', 'kohana_the_content_filter');
 add_filter('the_title','kohana_title_filter');
 add_filter('single_post_title','kohana_title_filter');
 add_filter('get_pages','kohana_page_filter');
@@ -50,20 +51,18 @@ function is_kohana_request()
  * @return string
  */
 function kohana_page_template_filter($template) {
-	if (is_kohana_request() && get_option('kohana_page_template')) {
+	if (is_kohana_request() AND get_option('kohana_page_template')) {
 		return locate_template(array(get_option('kohana_page_template')));
 	}
 	return $template;
 }
 
-/**
- * print any extra_head html that has been assigned to the Kohana request.
- */
+
 function kohana_wp_head() {
-    global $wp;
-    if (is_kohana_request() AND $wp->kohana->extra_head) {
-        print $wp->kohana->extra_head;
-    }
+	global $wp;
+	if (is_kohana_request() AND $wp->kohana->extra_head) {
+		print $wp->kohana->extra_head;
+	}
 }
 
 /**
@@ -244,9 +243,10 @@ function kohana_request_filter($request)
 	// attempt to validate the request by looking for a post or page id
 	$requested_post_id = kohana_validate_wp_request($request);
 	//error_log( "Found the post/page id of $requested_post_id" );
-	
+		
 	// If request is not for a valid word press page. Look for valid kohana request
 	if( ! $requested_post_id && !$request['feed'] && get_option('kohana_process_all_uri') ){
+		
 		//error_log( "No page found and process all uri is enabled. Examining uri for Kohana controller request" );
 		// Parse query string and look for kohana type requests
 		$kohana_request = kohana_parse_request();	
@@ -560,9 +560,9 @@ function kohana_page_request($kr)
 	if( $req->title ){
 		$wp->kohana->title = $req->title;
 	}
-    if( $req->extra_head ){
-        $wp->kohana->extra_head = $req->extra_head;
-    }
+	if( $req->extra_head ){
+		$wp->kohana->extra_head = $req->extra_head;
+	}
 	return $req->response;	
 }
 
