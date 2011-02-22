@@ -78,8 +78,9 @@ Kohana::$config->attach(new Kohana_Config_File);
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
+Route::set('default', '(<controller>(/<action>(/<id>(/<page>))))')
 	->defaults(array(
 		'controller' => get_option('kohana_default_controller'),
 		'action' => get_option('kohana_default_action'),
-		'id' => get_option('kohana_default_id')));	
+		'id' => get_option('kohana_default_id'),
+		'page' => 1));
