@@ -31,6 +31,7 @@ add_filter('single_post_title','kohana_title_filter');
 add_filter('get_pages','kohana_page_filter');
 add_filter('plugin_row_meta', 'set_plugin_meta', 10, 2);
 add_filter('page_template','kohana_page_template_filter');
+add_filter('page_link','kohana_page_link_filter');
 
 /**
  * Checks if a Kohana request is in progress.
@@ -42,6 +43,17 @@ function is_kohana_request()
 {
 	global $wp;
 	return ($wp->kohana->request != null) ? true : false;
+}
+
+/**
+ * Prevent wordpress from using kohana frontpage as permalink
+ * @param string $permalink
+ */
+function kohana_page_link_filter($permalink) {
+	if (is_kohana_request()) {
+		return str_replace('?'.$_SERVER['QUERY_STRING'],'',$_SERVER['REQUEST_URI']);
+	}
+	return $permalink;
 }
 
 /**
